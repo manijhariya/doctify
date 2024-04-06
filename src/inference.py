@@ -1,7 +1,7 @@
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
-from prompts import default_prompt
+from src.prompts import default_prompt
 
 torch.set_default_device("cuda")
 torch.cuda.empty_cache()
@@ -27,7 +27,7 @@ class Inference:
         )
 
     def generate_docstring(
-        self, code: str, language: str = "python", max_length: int = 200
+        self, code: str, language: str = "python", max_length: int = 400
     ) -> str:
         prompt = default_prompt.format(code=code)
         inputs = self.tokenizer(

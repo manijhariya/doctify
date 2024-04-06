@@ -131,7 +131,7 @@ def build_and_load_trainer(
     return trainer
 
 
-def main(model_name : str) -> None:
+def main(model_name: str) -> None:
     processed_file_path = Path("./data/processed")
     output_file_path = Path("./data/output")
     build_training_data(processed_file_path, output_file_path)

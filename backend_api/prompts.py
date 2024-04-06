@@ -1,4 +1,3 @@
-
 PROMPT = '''Here is example code and its docstring.
 Example Code:
 def get_note_history(request, note_id):
@@ -31,5 +30,3 @@ Following the pattern of above example generate the docstring for following code
 '''
 
 SYS_PROMPT = """You are a helpful, respectful and honest Software Engineer expert in multiple programming language. Always generate docstring as helpfully as possible, while being safe. Your should not include any harmful, unethical, racist, sexist, toxic, dangerous, or illegal content."""
-
-print(prompts.PROMPT.format(languageId="abc", code="xyz"))

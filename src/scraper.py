@@ -121,16 +121,16 @@ class Scarper:
             self.__save_as_jsonl__(filepath)
 
 
-repos = [
-    "https://github.com/numpy/numpy",
-    "https://github.com/scikit-learn/scikit-learn",
-    "https://github.com/scipy/scipy",
-    "https://github.com/pandas-dev/pandas"
-]
+if __name__ == "__main__":
+    repos = [
+        "https://github.com/numpy/numpy",
+        "https://github.com/scikit-learn/scikit-learn",
+        "https://github.com/scipy/scipy",
+        "https://github.com/pandas-dev/pandas",
+    ]
 
-for repo in repos:
-    s = Scarper(repo, "./data/raw/")
-    s.run()
-    s.save_data("data/processed/")
+    for repo in repos:
+        s = Scarper(repo, "./data/raw/")
+        s.run()
+        s.save_data("data/processed/")
 
-# https://github.com/google/scaaml

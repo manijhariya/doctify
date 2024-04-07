@@ -53,13 +53,10 @@ def write_docsstring_to_file(docstring_content: Dict[str, str]):
     updated_code = get_updated_code(
         docstring_content
     )
-
     if updated_code and start_pos != -1:
         end_pos = start_pos + len(docstring_content["original_code"])
-        indentation = file_content[:start_pos].split("\n")[-1]
-        modeified_lines = updated_code.split("\n")
-        indented_modified_lines = [indentation + line for line in modeified_lines]
-        indented_modified_code = "\n".join(indented_modified_lines)
+        modified_lines = updated_code.split("\n")
+        indented_modified_code = "\n".join(modified_lines)
         modified_content = (
             file_content[:start_pos] + indented_modified_code + file_content[end_pos:]
         )

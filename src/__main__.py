@@ -11,7 +11,7 @@ from treesitter import Treesitter, TreesitterMethodNode
 model_name = "./models/phi2/checkpoint-300"
 inference = Inference(model_name)
 
-RE_FUNCTION_DEF = re.compile(r"(.*?:\n)")
+RE_FUNCTION_DEF = re.compile(r"((\n|.)*?:\n)")
 RE_FUNCTION_INDENTATION = re.compile(r"^(\s*)")
 
 
@@ -19,7 +19,7 @@ def get_updated_code(docstring_content: Dict[str, str]) -> str:
     original_code = docstring_content["original_code"]
     docstring = docstring_content["generated_docstring"] 
     try:
-        function_def = RE_FUNCTION_DEF.findall(original_code)[0]
+        function_def = RE_FUNCTION_DEF.findall(original_code)[0][0]
         function_body = original_code.replace(function_def, "")
         indentation = " " * len(RE_FUNCTION_INDENTATION.findall(function_body)[0])
         return (

@@ -1,7 +1,7 @@
 src/repos/*
 data/
 models/
-
+test_file/
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

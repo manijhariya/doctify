@@ -1,8 +1,8 @@
 import tree_sitter
 
-from constants import Language
-from treesitter.treesitter import Treesitter, TreesitterMethodNode
-from treesitter.treesitter_registry import TreesitterRegistry
+from src.constants import Language
+from src.treesitter.treesitter import Treesitter, TreesitterMethodNode
+from src.treesitter.treesitter_registry import TreesitterRegistry
 
 
 class TreesitterPython(Treesitter):

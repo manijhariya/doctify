@@ -3,8 +3,8 @@ from abc import ABC
 import tree_sitter
 from tree_sitter_languages import get_language, get_parser
 
-from constants import Language
-from treesitter.treesitter_registry import TreesitterRegistry
+from src.constants import Language
+from src.treesitter.treesitter_registry import TreesitterRegistry
 
 
 class TreesitterMethodNode:

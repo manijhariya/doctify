@@ -1,8 +1,8 @@
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
-from prompts import default_prompt
-from logger import doctify_logger
+from src.logger import doctify_logger
+from src.prompts import default_prompt
 
 torch.set_default_device("cuda")
 torch.cuda.empty_cache()

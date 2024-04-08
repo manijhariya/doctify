@@ -7,9 +7,9 @@ import git
 import jsonlines
 import pandas
 
-from constants import Language
-from logger import doctify_logger
-from treesitter import Treesitter, TreesitterMethodNode
+from src.constants import Language
+from src.logger import doctify_logger
+from src.treesitter import Treesitter, TreesitterMethodNode
 
 
 class Scarper:
@@ -133,4 +133,3 @@ if __name__ == "__main__":
         s = Scarper(repo, "./data/raw/")
         s.run()
         s.save_data("data/processed/")
-

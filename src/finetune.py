@@ -12,7 +12,7 @@ from transformers import (AutoModelForCausalLM, AutoTokenizer,
                           TrainingArguments)
 from trl import SFTTrainer
 
-from logger import doctify_logger
+from src.logger import doctify_logger
 
 torch.cuda.empty_cache()
 
@@ -131,7 +131,7 @@ def build_and_load_trainer(
     return trainer
 
 
-def main(model_name: str) -> None:
+def finetune(model_name: str) -> None:
     processed_file_path = Path("./data/processed")
     output_file_path = Path("./data/output")
     build_training_data(processed_file_path, output_file_path)
@@ -152,4 +152,4 @@ def main(model_name: str) -> None:
 
 if __name__ == "__main__":
     base_model = "./models/phi2/checkpoint-250"
-    main(base_model)
+    finetune(base_model)

@@ -1,4 +1,4 @@
-from constants import Language
+from src.constants import Language
 
 
 class TreesitterRegistry:

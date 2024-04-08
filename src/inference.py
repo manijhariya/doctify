@@ -39,6 +39,12 @@ class Inference:
 
         return self.post_process_text(self.tokenizer.batch_decode(outputs)[0])
 
+    def close_llm(self):
+        del self.model
+        del self.tokenizer
+
+        torch.cuda.empty_cache()
+
 
 if __name__ == "__main__":
     model_name = "./models/phi2-phase2/checkpoint-600"

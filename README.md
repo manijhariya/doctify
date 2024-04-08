@@ -1,4 +1,4 @@
-# Project Title: Doctify - Automatic Google Style Docstring Generator
+# Doctify - Automatic Google Style Docstring Generator
  
 # Description:
 

@@ -47,7 +47,7 @@ class Inference:
 
 
 if __name__ == "__main__":
-    model_name = "./models/phi2-phase2/checkpoint-600"
+    model_name = "manijhriya/phi2-doctify"
 
     code = """def __clean_code__(self, source_code : str, docstring : str) -> Tuple[str, str]:
         if not docstring:
@@ -59,5 +59,6 @@ if __name__ == "__main__":
 
     inference = Inference(model_name)
     docstring = inference.generate_docstring(code, max_length=400)
+
 
     print(docstring)

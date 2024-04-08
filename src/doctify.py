@@ -8,7 +8,7 @@ from src.inference import Inference
 from src.logger import doctify_logger
 from src.treesitter import Treesitter, TreesitterMethodNode
 
-model_name = "./models/phi2/checkpoint-300"
+model_name = "manijhriya/phi2-doctify"
 inference = Inference(model_name)
 
 RE_FUNCTION_DEF = re.compile(r"((\n|.)*?:\n)")

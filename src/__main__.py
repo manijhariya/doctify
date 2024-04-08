@@ -5,34 +5,35 @@ from pathlib import Path
 from src.doctify import main as doctify_main
 from src.logger import doctify_logger
 
-
-def main(*args, **kwargs):
-    parser = argparse.ArgumentParser(
+parser = argparse.ArgumentParser(
         prog="doctify",
         description="Generate docstring for any file and repo",
         epilog="Thanks for using %(prog)s! :)",
     )
 
-    parser.add_argument(
-        "directory",
-        help="Specify the directory path to generate docstrings for all files.",
-        nargs="?",
-    )
-    parser.add_argument(
-        "-f",
-        "--file",
-        required=False,
-        help="Specify the file path to generate docstrings for this file.",
-    )
-    parser.add_argument(
-        "-p",
-        "--path",
-        required=False,
-        help="Specify the directory path to generate docstrings for all files.",
-    )
-    parser.add_argument("--version", action="version", version="%(prog)s 0.1.0")
-    parsed_args = parser.parse_args()
+parser.add_argument(
+    "directory",
+    help="Specify the directory path to generate docstrings for all files.",
+    nargs="?",
+)
+parser.add_argument(
+    "-f",
+    "--file",
+    required=False,
+    help="Specify the file path to generate docstrings for this file.",
+)
+parser.add_argument(
+    "-p",
+    "--path",
+    required=False,
+    help="Specify the directory path to generate docstrings for all files.",
+)
 
+parser.add_argument("--version", action="version", version="%(prog)s 0.1.0")
+parsed_args = parser.parse_args()
+
+
+def main():
     if parsed_args.file:
         target_file = Path(parsed_args.file)
 

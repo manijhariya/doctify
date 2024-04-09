@@ -16,6 +16,24 @@ RE_FUNCTION_INDENTATION = re.compile(r"^(\s*)")
 
 
 def get_updated_code(docstring_content: Dict[str, str]) -> str:
+    """
+    Update the docstring with the docstring content.
+
+    Parameters
+    ----------
+    docstring_content : Dict[str, str]
+        The docstring content.
+
+    Returns
+    -------
+    str
+        The updated docstring.
+
+    Raises
+    ------
+    Exception
+        If the docstring cannot be updated.
+    """
     original_code = docstring_content["original_code"]
     docstring = docstring_content["generated_docstring"]
     try:
@@ -36,6 +54,14 @@ def get_updated_code(docstring_content: Dict[str, str]) -> str:
 
 
 def write_docsstring_to_file(docstring_content: Dict[str, str]):
+    """
+    Write docstring to file.
+
+    Parameters
+    ----------
+    docstring_content : dict
+        Dictionary containing the filepath, method_name and the docstring content.
+    """
     doctify_logger.info(
         f"{docstring_content['filepath']} -> {docstring_content['method_name']} Writing docstring..."
     )
@@ -71,6 +97,14 @@ def write_docsstring_to_file(docstring_content: Dict[str, str]):
 
 
 def generate_docstring_for_file(filepath: Path):
+    """
+    Generate docstring for all files in the directory.
+
+    Parameters
+    ----------
+    filepath : Path
+        Path to the directory containing the files to be processed.
+    """
     docstring_contents = []
 
     try:
@@ -125,6 +159,14 @@ def generate_docstring_for_file(filepath: Path):
 
 
 def generate_docstring_for_directory(start_dir: Path):
+    """
+    Generate docstring for all.py files in a directory.
+
+        Parameters
+        ----------
+        start_dir : Path
+            The directory to start the recursion.
+    """
     if not isinstance(start_dir, Path):
         raise ValueError("start directory is not a Path object.")
 
@@ -149,6 +191,16 @@ def generate_docstring_for_directory(start_dir: Path):
 
 
 def main(*args, **kwargs):
+    """
+    Generate docstrings for all files in the given directory.
+
+    Parameters
+    ----------
+    filepath : str, optional
+        Path to the file to generate docstrings for.
+    path : str, optional
+        Path to the directory to generate docstrings for.
+    """
     if filepath := kwargs.get("filepath"):
         generate_docstring_for_file(filepath)
 

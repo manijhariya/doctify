@@ -15,6 +15,20 @@ class TreesitterMethodNode:
         method_source_code: "str | None",
         node: tree_sitter.Node,
     ):
+        """
+        Create a new method object.
+
+        Parameters
+        ----------
+        name : str or bytes
+            The name of the method.
+        doc_comment : str or bytes or None
+            The doc comment of the method.
+        method_source_code : str or bytes or None
+            The source code of the method.
+        node : Node
+            The node of the method.
+        """
         self.name = name
         self.doc_comment = doc_comment
         self.method_source_code = method_source_code or node.text.decode()
@@ -29,6 +43,20 @@ class Treesitter(ABC):
         name_identifier: str,
         doc_comment_identifier: str,
     ):
+        """
+        Parser for a method declaration.
+
+        Parameters
+        ----------
+        language : Language
+            Language of the method declaration.
+        method_declaration_identifier : str
+            Identifier of the method declaration.
+        name_identifier : str
+            Identifier of the method name.
+        doc_comment_identifier : str
+            Identifier of the method doc comment.
+        """
         self.parser = get_parser(language.value)
         self.language = get_language(language.value)
         self.method_declaration_identifier = method_declaration_identifier
@@ -40,6 +68,19 @@ class Treesitter(ABC):
         return TreesitterRegistry.create_treesitter(language)
 
     def parse(self, file_bytes: bytes) -> list[TreesitterMethodNode]:
+        """
+        Parse the given file and return a list of method nodes.
+
+        Parameters
+        ----------
+        file_bytes : bytes
+            The file bytes to parse.
+
+        Returns
+        -------
+        list of TreesitterMethodNode
+            A list of method nodes.
+        """
         self.tree = self.parser.parse(file_bytes)
         result = []
         methods = self._query_all_methods(self.tree.root_node)
@@ -55,6 +96,19 @@ class Treesitter(ABC):
         self,
         node: tree_sitter.Node,
     ):
+        """
+        Query all methods of a node.
+
+        Parameters
+        ----------
+        node : tree_sitter.Node
+            The node to query.
+
+        Returns
+        -------
+        methods : list of dicts
+            A list of methods.
+        """
         methods = []
         if node.type == self.method_declaration_identifier:
             doc_comment_node = None
@@ -70,6 +124,19 @@ class Treesitter(ABC):
         return methods
 
     def _query_method_name(self, node: tree_sitter.Node):
+        """
+        Get the name of the method being called.
+
+        Parameters
+        ----------
+        node : tree_sitter.Node
+            The node containing the method declaration.
+
+        Returns
+        -------
+        str
+            The name of the method being called.
+        """
         if node.type == self.method_declaration_identifier:
             for child in node.children:
                 if child.type == self.method_name_identifier:

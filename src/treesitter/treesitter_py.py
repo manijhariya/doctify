@@ -7,11 +7,28 @@ from src.treesitter.treesitter_registry import TreesitterRegistry
 
 class TreesitterPython(Treesitter):
     def __init__(self):
+        """
+        A function definition consists of an identifier followed by an expression
+        statement.
+        """
         super().__init__(
             Language.PYTHON, "function_definition", "identifier", "expression_statement"
         )
 
     def parse(self, file_bytes: bytes) -> list[TreesitterMethodNode]:
+        """
+        Parse the given file bytes.
+
+        Parameters
+        ----------
+        file_bytes : bytes
+            The file bytes to parse.
+
+        Returns
+        -------
+        list of TreesitterMethodNode
+            The parsed methods.
+        """
         self.tree = self.parser.parse(file_bytes)
         result = []
         methods = self._query_all_methods(self.tree.root_node)
@@ -22,6 +39,19 @@ class TreesitterPython(Treesitter):
         return result
 
     def _query_method_name(self, node: tree_sitter.Node):
+        """
+        Get the name of the method being called.
+
+        Parameters
+        ----------
+        node : tree_sitter.Node
+            The node containing the method declaration.
+
+        Returns
+        -------
+        str
+            The name of the method being called.
+        """
         if node.type == self.method_declaration_identifier:
             for child in node.children:
                 if child.type == self.method_name_identifier:
@@ -29,6 +59,19 @@ class TreesitterPython(Treesitter):
         return None
 
     def _query_all_methods(self, node: tree_sitter.Node):
+        """
+        Query all methods in the given node.
+
+        Parameters
+        ----------
+        node : tree_sitter.Node
+            The node to query.
+
+        Returns
+        -------
+        methods : list of tree_sitter.Node
+            The list of methods.
+        """
         methods = []
         for child in node.children:
             if child.type == self.method_declaration_identifier:
@@ -41,6 +84,19 @@ class TreesitterPython(Treesitter):
         return methods
 
     def _query_doc_comment(self, node: tree_sitter.Node):
+        """
+        Query for doc string of a function definition.
+
+        Parameters
+        ----------
+        node : tree_sitter.Node
+            The node to query.
+
+        Returns
+        -------
+        doc_str : str
+            The doc string of the function definition.
+        """
         query_code = """
             (function_definition
                 body: (block . (expression_statement (string)) @function_doc_str))

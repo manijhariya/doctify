@@ -34,6 +34,13 @@ parsed_args = parser.parse_args()
 
 
 def main():
+    """
+    Main entry point for doctify.
+
+        Parameters
+        ----------
+        None
+    """
     try:
         if parsed_args.file:
             target_file = Path(parsed_args.file)

@@ -14,16 +14,44 @@ from src.treesitter import Treesitter, TreesitterMethodNode
 
 class Scarper:
     def __init__(self, repo_url, save_path):
+        """
+        Create a new repository.
+
+        Parameters
+        ----------
+        repo_url : str
+            The URL of the repository to create.
+        save_path : str
+            The path to save the repository to.
+        """
         self.repo_url = repo_url
         self.repo_save_path = save_path
         self.repo_save_path += self.repo_url.split("/")[4]
         self.ignores = [".git"]
 
     def download_repo(self):
+        """
+        Download the repository to the local directory.
+
+        Parameters
+        ----------
+        repo_url : str
+            The URL of the repository to download.
+        repo_save_path : str
+            The path to save the repository to.
+        """
         doctify_logger.info(f"Cloning {self.repo_url} into {self.repo_save_path}")
         git.Repo.clone_from(self.repo_url, self.repo_save_path)
 
     def scrape_function_docstring(self):
+        """
+        Scrape all function docstrings from all files.
+
+        Returns
+        -------
+        list[dict]
+            List of all function docstrings.
+        """
         all_method_comments = []
         for filename in self.filenames:
             if not filename:
@@ -66,6 +94,17 @@ class Scarper:
         return all_method_comments
 
     def run(self):
+        """
+        Scrape all function docstrings from the repo.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+        """
         self.download_repo()
         self.all_file_paths = []
         complete_filenames = []
@@ -93,6 +132,27 @@ class Scarper:
         self.all_method_comments = self.scrape_function_docstring()
 
     def __clean_code__(self, source_code, docstring):
+        """
+        Clean the source code and docstring.
+
+        Parameters
+        ----------
+        source_code : str
+            The source code to clean.
+        docstring : str
+            The docstring to clean.
+
+        Returns
+        -------
+        source_code : str
+            The cleaned source code.
+        docstring : str
+            The cleaned docstring.
+
+        Notes
+        -----
+        This method is called by the `__call__` method of the class.
+        """
         if not docstring:
             return None, None
         source_code = source_code.replace(docstring, "")
@@ -101,13 +161,40 @@ class Scarper:
         return source_code, docstring  # re.sub('\s+', ' ', source_code)
 
     def __save_as_jsonl__(self, data_save_path):
+        """
+        Save the method comments to a jsonl file.
+
+        Parameters
+        ----------
+        data_save_path : str
+            Path to save the jsonl file.
+        """
         with jsonlines.open(data_save_path, mode="w") as writer:
             writer.write_all(self.all_method_comments)
 
     def __save_as_csv__(self, data_save_path):
+        """
+        Save the data to a csv file.
+
+        Parameters
+        ----------
+        data_save_path : str
+            Path to the csv file.
+        """
         pass
 
     def save_data(self, data_save_path, filetype: Optional[str] = None):
+        """
+        Save the data to a file.
+
+        Parameters
+        ----------
+        data_save_path : str
+            Path to save the data.
+        filetype : str, optional
+            Type of file to save.
+            Default is None.
+        """
         os.makedirs(data_save_path, exist_ok=True)
 
         filepath = (

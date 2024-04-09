@@ -18,10 +18,36 @@ torch.cuda.empty_cache()
 
 
 def format_row(row: Dict[str, str]) -> str:
+    """
+    Format row of a dataframe row
+
+    Parameters
+    ----------
+    row : Dict
+        Directory containing data files.
+
+    Returns
+    -------
+    str
+        formatted string with code and docstring
+    """
     return f'<|beginoftext|> {row["code"]} <|separateoftext|> {row["docstring"]} <|endoftext|>'
 
 
 def load_all_data_files(file_path: Path) -> pd.DataFrame:
+    """
+    Load all data files from a directory.
+
+    Parameters
+    ----------
+    file_path : Path
+        Directory containing data files.
+
+    Returns
+    -------
+    pd.DataFrame
+        Dataframe containing all data.
+    """
     data = []
     for file in os.listdir(file_path):
         with jsonlines.open(f"{file_path}/{file}", "r") as reader:
@@ -30,6 +56,16 @@ def load_all_data_files(file_path: Path) -> pd.DataFrame:
 
 
 def build_training_data(processed_data: Path, output_dir: Path) -> None:
+    """
+    Build the training data.
+
+    Parameters
+    ----------
+    processed_data : Path
+        Path to the processed data directory.
+    output_dir : Path
+        Path to the output directory.
+    """
     dataset = load_all_data_files(processed_data)
     df = pd.DataFrame(dataset)
     df["Text"] = df.apply(format_row, axis=1)
@@ -41,10 +77,39 @@ def build_training_data(processed_data: Path, output_dir: Path) -> None:
 
 
 def load_training_dataset(data_file_path: Path):
+    """
+    Load the training dataset.
+
+    Parameters
+    ----------
+    data_file_path : Path
+        Path to the data file.
+
+    Returns
+    -------
+    X : ndarray of shape (n_samples, n_features)
+        The training data.
+
+    y : ndarray of shape (n_samples,)
+        The target values.
+    """
     return load_dataset("csv", data_files=data_file_path, split="train")
 
 
 def build_and_load_tokenizer(model_name: str) -> AutoTokenizer:
+    """
+    Build and load a tokenizer.
+
+    Parameters
+    ----------
+    model_name : str
+        The name of the model to load.
+
+    Returns
+    -------
+    tokenizer : AutoTokenizer
+        The tokenizer.
+    """
     tokenizer = AutoTokenizer.from_pretrained(
         model_name,
         use_fast=True,
@@ -64,6 +129,19 @@ def build_and_load_tokenizer(model_name: str) -> AutoTokenizer:
 
 
 def build_and_load_training_model(model_name: str) -> SFTTrainer:
+    """
+    Build and load a model for training.
+
+    Parameters
+    ----------
+    model_name : str
+        Name of the model to load.
+
+    Returns
+    -------
+    SFTTrainer
+        Trainer for the model.
+    """
     bnb_config = BitsAndBytesConfig(
         load_in_4bit=True,
         bnb_4bit_quant_type="nf4",
@@ -92,6 +170,25 @@ def build_and_load_trainer(
     *args,
     **kwargs,
 ) -> SFTTrainer:
+    """
+    Build and load a trainer.
+
+    Parameters
+    ----------
+    model : AutoModelForCausalLM
+        The model to train.
+    tokenizer : AutoTokenizer
+        The tokenizer to use.
+    training_dataset : dataset
+        The training dataset.
+    *args, **kwargs
+        Additional arguments to pass to the trainer.
+
+    Returns
+    -------
+    SFTTrainer
+        The trainer.
+    """
     training_arguments = TrainingArguments(
         output_dir=kwargs.get("output_dir", "./models/phi2/"),
         num_train_epochs=10,
@@ -132,6 +229,14 @@ def build_and_load_trainer(
 
 
 def finetune(model_name: str) -> None:
+    """
+    Fine-tune a model.
+
+    Parameters
+    ----------
+    model_name : str
+        Name of the model to fine-tune.
+    """
     processed_file_path = Path("./data/processed")
     output_file_path = Path("./data/output")
     build_training_data(processed_file_path, output_file_path)
